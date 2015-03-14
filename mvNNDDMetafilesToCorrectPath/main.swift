@@ -10,16 +10,8 @@
 import Foundation
 
 /**
-* ある時刻(0時〜23時)が、指定した時間の範囲内に含まれるかどうかを調べる
-* プログラムを作ってください。
-*      言語は問いませんが、ライブラリなどを使ってはいけません。
-*      以下のような条件を満たすこと。
-*      - ある時刻と、時間の範囲(開始時刻と終了時刻)を受け取る。
-*      - 時刻は、6時であれば6のような指定でよく、分単位は問わない。
-*      - 範囲指定は、開始時刻を含み、終了時刻は含まないと判断すること。
-*      - ただし開始時刻と終了時刻が同じ場合は含むと判断すること。
-*      - 開始時刻が22時で終了時刻が5時、というような指定をされても動作すること。
-*/
+ *
+ */
 
 let EXIT_TRUE: Int32 = 0
 let EXIT_FALSE: Int32 = 1
@@ -28,41 +20,6 @@ let NULL_POINTER_ERROR: Int = 3
 let NUMBER_FORMAT_ERROR = 4
 let ARRAY_INDEX_OUT_OF_RANGE: Int = 5
 
-class MyTime {
-    var t: Int
-    
-    init(numStr: String) {
-        if let tmpNum: Int = numStr.toInt() {
-            self.t = 0 <= tmpNum && tmpNum <= 23 ? tmpNum : NUMBER_FORMAT_ERROR
-        } else {
-            self.t = NULL_POINTER_ERROR
-        }
-    }
-}
-
-func - (left: MyTime, right: MyTime) -> Int {
-    if (left.t >= right.t) {
-        return left.t - right.t
-    } else {
-        return (left.t + 24) - right.t
-    }
-}
-
-class MyRange {
-    var begin: MyTime
-    var end: MyTime
-    
-    init(begin: MyTime, end: MyTime) {
-        self.begin = begin
-        self.end = end
-    }
-    
-    func contains(time: MyTime) -> Bool {
-        return end - begin == 0 && time - begin == 0 || end - begin > time - begin
-    }
-}
-
-class Main {
     func main(args: [String]) -> Int32 {
         var fileManager = NSFileManager.defaultManager()
         
@@ -117,8 +74,7 @@ class Main {
         
         return 0
     }
-}
 
 //if (4 <= C_ARGC) {
-exit(Main().main(Process.arguments))
+exit(main(Process.arguments))
 //}
