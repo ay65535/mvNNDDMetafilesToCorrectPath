@@ -233,6 +233,7 @@
 				2AE9D5D71AB47D8100F1705A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
