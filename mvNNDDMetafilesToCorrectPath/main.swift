@@ -82,32 +82,35 @@ class Main {
         var mp4s = fileManager.contentsOfDirectoryAtPath(dest, error: nil) as [String] //?.filter(filterA) as [String]
         
         //println(mp4s)
-        func getFilesInDirectory(path: String) -> NSArray! {
+        func getFilesInDirectory(path: String) -> (NSArray!, NSArray!, NSArray!) {
             var array = NSMutableArray()
-            let str = "mp4"
-            let stri = str.cStringUsingEncoding(NSUTF8StringEncoding)
+            var mp4s = NSMutableArray()
+            var xmls = NSMutableArray()
             var dirEnum = fileManager.enumeratorAtPath(path)
             while let name = dirEnum?.nextObject() as? NSString {
-                var fullPath = path.stringByAppendingPathComponent(name)  // Full Path
-                if let cname = name.componentsSeparatedByString(".").last as? String {
-                    //                    if let cstri = stri {
-                    //                        if let ccname =
-                    let ccname = cname.cStringUsingEncoding(NSUTF8StringEncoding)
-                    let aName = ccname
-                    let aStr = stri
-                    if aName! == aStr! {
-                    //println("\(aName) == \(aStr)")
-                    println("\(String(UTF8String: aName!)) == \(String(UTF8String: aStr!))")
-                        println(name)
+                var fullPath: NSString = path.stringByAppendingPathComponent(name)  // Full Path
+                if name.hasSuffix(".mp4") || name.hasSuffix("[ThumbInfo].xml") {
+                    let pattern = "(\\.mp4|\\[ThumbInfo\\]\\.xml)"
+                    let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.CaseInsensitive, error: nil)
+                    //regex?.firstMatchInString(fullPath, options: nil, range: NSMakeRange(0, fullPath.length))
+                    regex?.enumerateMatchesInString(fullPath, options: nil, range: NSMakeRange(0, fullPath.length),
+                        usingBlock: {(result: NSTextCheckingResult!, flags: NSMatchingFlags, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+                            for i in 0...result.numberOfRanges - 1 {
+                                let range = result.rangeAtIndex(i)
+                                //println(fullPath.substringWithRange(range1))
+                                let basename = fullPath.substringWithRange(NSMakeRange(0, range.location))
+                                array.addObject(basename)
+                            }
+                    })
+                    
+                    if name.hasSuffix(".mp4") {
+                        mp4s.addObject(fullPath)
+                    } else {
+                        xmls.addObject(fullPath)
                     }
-                    //                            if ccname == cstri { // checks the extension
-                    //                                println(name)
-                    //                                array.addObject(fullPath)
-                    ////                            }
-                    //                    }
                 }
             }
-            return array;
+            return (array, mp4s, xmls)
         }
         let result = getFilesInDirectory(dest)
         //println("\n\(result)")
