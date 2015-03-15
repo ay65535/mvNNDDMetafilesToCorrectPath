@@ -38,6 +38,36 @@ let ARRAY_INDEX_OUT_OF_RANGE: Int = 5
         
         var mp4s = fileManager.contentsOfDirectoryAtPath(dest, error: nil) as [String] //?.filter(filterA) as [String]
         
+        /*
+          1. find . *.mp4 or *[ThumbsInfo].xml
+          2. read 2 lines
+          3. p = 1st line; n = 2nd line
+          4. if p is .mp4 then
+               push vlist
+               next
+               if n is .mp4 then
+                 ;
+               elif n is .xml then
+                 if compareBasename p, n == OK then
+                   do nothing
+                 else
+                   ;
+                 fi
+               fi
+             elif p is .xml then
+               push mlist
+               next
+               if n is .mp4 then
+                 if compareBasename p, n == OK then
+                   do nothing
+                 else
+                   ;
+                 fi
+               elif n is .xml then
+                 ;
+               fi
+             fi
+        */
         //println(mp4s)
         func getFilesInDirectory(path: String) -> (NSArray!, NSArray!, NSArray!) {
             var array = NSMutableArray()
